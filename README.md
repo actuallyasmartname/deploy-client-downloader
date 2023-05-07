@@ -1,12 +1,18 @@
 # Instructions
 0. Install python... obviously
 1. Install `requests` if you haven't already (pip install requests or pip3 install requests)
-2. Run `python main.py` or `python3 main.py`. Enter in a year (only years >=2020 will work with downloading) It will attempt to download package manifests, then the files with them.
+2. Run `python main.py` or `python3 main.py`. Enter in a channel to use, then any additional arguments if needed. It will attempt to download package manifests, then the files with them.
 
+# Channels
+latest-client: Downloads the latest Windows client pushed out to regular users
+
+latest-studio64: Downloads the latest Windows Studio x64 version pushed out to regular users
+
+main: Downloads all available clients of a year that were pushed out to regular users
 # TODO
-Support for multiple channels (Probably only Mac and Windows though since most channels just have version-none or version-missing)
+Support for multiple channels
 
-Download just the latest package
+Download just the latest packages (still gotta do Mac and other channels)
 
 Sort clients if they are Studio, Studio64 or WindowsPlayer
 
