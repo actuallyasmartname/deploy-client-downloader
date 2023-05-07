@@ -1,5 +1,8 @@
-import requests, os
+import requests, os, sys
 year = input("What year of clients would you like to download?: ")
+if int(year) < 2009:
+    print("DeployHistory does not exist for years before 2009")
+    sys.exit()
 print("Downloading DeployHistory...")
 deployhistory = requests.get("https://s3.amazonaws.com/setup.roblox.com/DeployHistory.txt")
 with open("DeployHistory.txt", 'wb') as f:
@@ -35,7 +38,8 @@ with open(f"DeployHistory{year}.txt", 'r') as f:
 print("Done!")
 print("Downloading files from manifests (this will take a long time, please stand by)...")
 if not os.path.exists(f"{os.getcwd()}/{year}/manifests"):
-    print("Error: No manifests were downloaded, try a different year.")
+    print("Error: No manifests were downloaded, try a different year. (all clients before 2020 have been erased from ROBLOX's servers, sorry!)")
+    os.remove(f"DeployHistory{year}.txt")
 else:
         lists = os.listdir(f"{os.getcwd()}/{year}/manifests")
         for i in range(0, len(lists)):
