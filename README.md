@@ -9,3 +9,7 @@ Support for multiple channels (Probably only Mac and Windows though since most c
 Download just the latest package
 
 Sort clients if they are Studio, Studio64 or WindowsPlayer
+
+Make it look less like some sort of debug madness and more user friendly
+
+Clean up and optimize code, it's absolute hell in there and I warn the people who attempt to view it
