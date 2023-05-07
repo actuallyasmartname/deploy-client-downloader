@@ -21,3 +21,5 @@ Make it look less like some sort of debug madness and more user friendly
 Clean up and optimize code, it's absolute hell in there and I warn the people who attempt to view it
 
 Support for RCCService (rbxPkgManifest does not exist for RCCService)
+
+Fallback/mirror servers when client not found (this will probably never be implemented though)
