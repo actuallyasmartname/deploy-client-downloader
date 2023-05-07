@@ -105,6 +105,6 @@ elif channel == "main":
                             os.makedirs(f"{os.getcwd()}/main/{year}/{os.path.splitext(lists[i])[0]}")
                         with open(f"{os.getcwd()}/main/{year}/{os.path.splitext(lists[i])[0]}/{newest_items[g]}", 'wb') as f:
                             f.write(file.content)
-os.remove(f"DeployHistory{year}.txt")
+        os.remove(f"DeployHistory{year}.txt")
 else:
     input("Channel is not valid! Press enter to continue...")
