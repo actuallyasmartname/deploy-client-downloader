@@ -24,6 +24,7 @@ if channel == "latest-client":
                 with open(f"{os.getcwd()}/latest-client/{latesthash.text}/{newest_items[g]}", 'wb') as f:
                     f.write(file.content)
     print("Done!")
+    input("Press enter to continue...")
     sys.exit()
 elif channel == "latest-studio64":
     print("Getting latest version of Studio x64...")
@@ -49,6 +50,7 @@ elif channel == "latest-studio64":
                 with open(f"{os.getcwd()}/latest-studio64/{latesthash.text}/{newest_items[g]}", 'wb') as f:
                     f.write(file.content)
     print("Done!")
+    input("Press enter to continue...")
     sys.exit()
 elif channel == "main":
     year = input("What year of clients would you like to download?: ")
@@ -92,6 +94,7 @@ elif channel == "main":
     if not os.path.exists(f"{os.getcwd()}/main/{year}/manifests"):
         print("Error: No manifests were downloaded, try a different year. (all clients before 2020 have been erased from ROBLOX's servers, sorry!)")
         os.remove(f"DeployHistory{year}.txt")
+        input("Press enter to continue...")
     else:
         lists = os.listdir(f"{os.getcwd()}/main/{year}/manifests")
         for i in range(0, len(lists)):
