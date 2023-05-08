@@ -6,11 +6,11 @@
 # Channels
 See `channels.txt`
 # TODO
-Support for multiple channels
+Support for all channels except channels where all versions are hidden
 
 Download just the latest packages (still gotta do Mac and other channels)
 
-Sort clients if they are Studio, Studio64 or WindowsPlayer
+Sort clients if they are Studio, Studio64, WindowsPlayer, etc.
 
 Make it look less like some sort of debug madness and more user friendly
 
