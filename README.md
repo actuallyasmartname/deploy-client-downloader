@@ -1,7 +1,9 @@
+"The world would be a better place if Roblox packaged Windows DeployClients like they did with Mac" - Nobody
+
 # Instructions
 0. Install python... obviously
 1. Install `requests` if you haven't already (pip install requests or pip3 install requests)
-2. Run `python main.py` or `python3 main.py`. Enter in a channel to use, then any additional arguments if needed. It will attempt to download package manifests, then the files with them.
+2. Run `python main.py` or `python3 main.py`. Enter in a channel to use, then any additional arguments if needed. It will attempt to download package manifests (except for Mac, which are all in one zip), then the files with them.
 
 # Channels
 See `channels.txt`
