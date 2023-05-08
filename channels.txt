@@ -2,9 +2,11 @@ main: Download clients from a specific year (cannot get clients before 2020) fro
 
 latest-client: Grabs latest client from the main channel
 latest-studio64: Grabs latest Studio x64 client from the main channel
-latest-zlive2: Grabs latest client from the ZLive2 channel (all versions in DeployHistory are hidden)
-latest-zlive2-mac: Grabs latest client from the ZLive2 channel for MacOS (all versions in DeployHistory are hidden)
-latest-zcanary-studio-mac: Grabs latest Studio client from the ZCanary channel for MacOS (versions after September 2?, 2022 are hidden)
-latest-zcanary-mac: Grabs latest client from the ZCanary channel for MacOS (versions after September 2?, 2022 are hidden)
-latest-zcanary: Grabs latest client from the ZCanary channel (versions after September 2?, 2022 are hidden)
-
+latest-zlive2-client: Grabs latest client from the ZLive2 channel
+latest-zlive2-studio: Grabs latest Studio clientfrom the ZLive2 channel
+latest-zlive2-client-mac: Grabs latest client from the ZLive2 channel for MacOS
+latest-zcanary-studio-mac: Grabs latest Studio client from the ZCanary channel for MacOS
+latest-zcanary-client-mac: Grabs latest client from the ZCanary channel for MacOS
+latest-zcanary-client: Grabs latest client from the ZCanary channel
+latest-zcanary1-client-mac: Grabs latest client from the ZCanary1 channel for MacOS
+latest-zcanary1-studio-mac: Grabs latest Studio client from the ZCanary1 channel for MacOS

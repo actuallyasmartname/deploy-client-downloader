@@ -1,6 +1,10 @@
 import requests, os, sys
-channels = ["latest-client", "latest-studio64", "latest-zlive2", "latest-zlive2-studio", "latest-zlive2-mac", "latest-zcanary-studio-mac", "latest-zcanary-mac", "latest-zcanary", "latest-zcanary1-mac", "latest-zcanary1-studio-mac", "main"] 
+channels = ["latest-client", "latest-studio64", "latest-zlive2-client", "latest-zlive2-studio", "latest-zlive2-client-mac", "latest-zcanary-studio-mac", "latest-zcanary-client-mac", "latest-zcanary-client", "latest-zcanary1-client-mac", "latest-zcanary1-studio-mac", "main"] 
 channel = input("What channel would you like to download from? (see channels.txt for a list of these): ")
+if channel not in channels:
+    print("Channel not found!")
+    input("Press enter to continue...")
+    sys.exit()
 def grab_latestnonchannel(version, folder):
     print(f"Getting version hash for {folder}...")
     latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{version}")
@@ -162,7 +166,3 @@ elif channel == "main":
                         with open(f"{os.getcwd()}/main/{year}/{os.path.splitext(lists[i])[0]}/{newest_items[g]}", 'wb') as f:
                             f.write(file.content)
         os.remove(f"DeployHistory{year}.txt")
-if channel not in channels:
-    print("Channel not found!")
-    input("Press enter to continue...")
-    sys.exit()
