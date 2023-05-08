@@ -6,6 +6,8 @@
 # Channels
 See `channels.txt`
 # TODO
+Priority: Stop using elifs, they're my new sleep paralysis demon
+
 Support for all channels except channels where all versions are hidden
 
 Download just the latest packages (still gotta do Mac and other channels)
