@@ -1,83 +1,63 @@
 import requests, os, sys
 channel = input("What channel would you like to download from? (latest-client, latest-studio64, latest-zlive2 or main): ")
+def grab_latestnonchannel(version, folder):
+    print(f"Getting version hash for {folder}...")
+    latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{version}")
+    print("Done!")
+    print("Grabbing manifest file...")
+    if latesthash.status_code == 200:
+        manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-rbxPkgManifest.txt")
+        if manifest.status_code == 200:
+            if not os.path.exists(f"{os.getcwd()}/{folder}/{latesthash.text}"):
+                os.makedirs(f"{os.getcwd()}/{folder}/{latesthash.text}")
+            if not os.path.exists(f"{os.getcwd()}/{folder}/manifests"):
+                os.makedirs(f"{os.getcwd()}/{folder}/manifests")
+            with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.text}.txt", 'w') as f:
+                f.write(manifest.text)
+    print("Done!")
+    print(f"Downloading {latesthash.text}...")
+    with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.text}.txt") as f:
+        newest_items = [ x for x in f.read().splitlines() if "." in x ]
+        for g in range(0, len(newest_items)):
+            file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-{newest_items[g]}", stream=True)
+            if file.status_code == 200:
+                with open(f"{os.getcwd()}/{folder}/{latesthash.text}/{newest_items[g]}", 'wb') as f:
+                    f.write(file.content)
+    print("Done!")
+    input("Press enter to continue...")
+    sys.exit()
+def grab_latestchannel(channel, folder):
+    print(f"Getting latest version hash for {folder}...")
+    latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/version")
+    print("Done!")
+    print("Grabbing manifest file...")
+    if latesthash.status_code == 200:
+        manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{latesthash.text}-rbxPkgManifest.txt")
+        if manifest.status_code == 200:
+            if not os.path.exists(f"{os.getcwd()}/{folder}/{latesthash.text}"):
+                os.makedirs(f"{os.getcwd()}/{folder}/{latesthash.text}")
+            if not os.path.exists(f"{os.getcwd()}/{folder}/manifests"):
+                os.makedirs(f"{os.getcwd()}/{folder}/manifests")
+            with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.text}.txt", 'w') as f:
+                f.write(manifest.text)
+    print("Done!")
+    print(f"Downloading {latesthash.text}...")
+    with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.text}.txt") as f:
+        newest_items = [ x for x in f.read().splitlines() if "." in x ]
+        for g in range(0, len(newest_items)):
+            file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-{newest_items[g]}", stream=True)
+            if file.status_code == 200:
+                with open(f"{os.getcwd()}/{folder}/{latesthash.text}/{newest_items[g]}", 'wb') as f:
+                    f.write(file.content)
+    print("Done!")
+    input("Press enter to continue...")
+    sys.exit()
 if channel == "latest-client":
-    print("Getting latest version of Roblox...")
-    latesthash = requests.get("https://s3.amazonaws.com/setup.roblox.com/version")
-    print("Done!")
-    print("Grabbing manifest file...")
-    if latesthash.status_code == 200:
-        manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-rbxPkgManifest.txt")
-        if manifest.status_code == 200:
-            if not os.path.exists(f"{os.getcwd()}/latest-client/{latesthash.text}"):
-                os.makedirs(f"{os.getcwd()}/latest-client/{latesthash.text}")
-            if not os.path.exists(f"{os.getcwd()}/latest-client/manifests"):
-                os.makedirs(f"{os.getcwd()}/latest-client/manifests")
-            with open(f"{os.getcwd()}/latest-client/manifests/{latesthash.text}.txt", 'w') as f:
-                f.write(manifest.text)
-    print("Done!")
-    print(f"Downloading {latesthash.text}...")
-    with open(f"{os.getcwd()}/latest-client/manifests/{latesthash.text}.txt") as f:
-        newest_items = [ x for x in f.read().splitlines() if "." in x ]
-        for g in range(0, len(newest_items)):
-            file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-{newest_items[g]}", stream=True)
-            if file.status_code == 200:
-                with open(f"{os.getcwd()}/latest-client/{latesthash.text}/{newest_items[g]}", 'wb') as f:
-                    f.write(file.content)
-    print("Done!")
-    input("Press enter to continue...")
-    sys.exit()
+    grab_latestnonchannel("version", "latest-client")
 elif channel == "latest-studio64":
-    print("Getting latest version of Studio x64...")
-    latesthash = requests.get("https://s3.amazonaws.com/setup.roblox.com/versionQTStudio")
-    print("Done!")
-    print("Grabbing manifest file...")
-    if latesthash.status_code == 200:
-        manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-rbxPkgManifest.txt")
-        if manifest.status_code == 200:
-            if not os.path.exists(f"{os.getcwd()}/latest-studio64/{latesthash.text}"):
-                os.makedirs(f"{os.getcwd()}/latest-studio64/{latesthash.text}")
-            if not os.path.exists(f"{os.getcwd()}/latest-studio64/manifests"):
-                os.makedirs(f"{os.getcwd()}/latest-studio64/manifests")
-            with open(f"{os.getcwd()}/latest-studio64/manifests/{latesthash.text}.txt", 'w') as f:
-                f.write(manifest.text)
-    print("Done!")
-    print(f"Downloading {latesthash.text}...")
-    with open(f"{os.getcwd()}/latest-studio64/manifests/{latesthash.text}.txt") as f:
-        newest_items = [ x for x in f.read().splitlines() if "." in x ]
-        for g in range(0, len(newest_items)):
-            file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-{newest_items[g]}", stream=True)
-            if file.status_code == 200:
-                with open(f"{os.getcwd()}/latest-studio64/{latesthash.text}/{newest_items[g]}", 'wb') as f:
-                    f.write(file.content)
-    print("Done!")
-    input("Press enter to continue...")
-    sys.exit()
+    grab_latestnonchannel("versionQTStudio", "latest-studio64")
 elif channel == "latest-zlive2":
-    print("Getting latest ZLive2 client...")
-    latesthash = requests.get("https://s3.amazonaws.com/setup.roblox.com/channel/zlive2/version")
-    print("Done!")
-    print("Grabbing manifest file...")
-    if latesthash.status_code == 200:
-        manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/zlive2/{latesthash.text}-rbxPkgManifest.txt")
-        if manifest.status_code == 200:
-            if not os.path.exists(f"{os.getcwd()}/latest-zlive2/{latesthash.text}"):
-                os.makedirs(f"{os.getcwd()}/latest-zlive2/{latesthash.text}")
-            if not os.path.exists(f"{os.getcwd()}/latest-zlive2/manifests"):
-                os.makedirs(f"{os.getcwd()}/latest-zlive2/manifests")
-            with open(f"{os.getcwd()}/latest-zlive2/manifests/{latesthash.text}.txt", 'w') as f:
-                f.write(manifest.text)
-    print("Done!")
-    print(f"Downloading {latesthash.text}...")
-    with open(f"{os.getcwd()}/latest-zlive2/manifests/{latesthash.text}.txt") as f:
-        newest_items = [ x for x in f.read().splitlines() if "." in x ]
-        for g in range(0, len(newest_items)):
-            file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-{newest_items[g]}", stream=True)
-            if file.status_code == 200:
-                with open(f"{os.getcwd()}/latest-zlive2/{latesthash.text}/{newest_items[g]}", 'wb') as f:
-                    f.write(file.content)
-    print("Done!")
-    input("Press enter to continue...")
-    sys.exit()
+    grab_latestchannel("zlive2", "latest-zlive2")
 elif channel == "main":
     year = input("What year of clients would you like to download?: ")
     if int(year) < 2009:
