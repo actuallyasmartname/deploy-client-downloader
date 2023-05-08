@@ -1,4 +1,5 @@
 import requests, os, sys
+channels = ["latest-client", "latest-studio64", "latest-zlive2", "latest-zlive2-studio", "latest-zlive2-mac", "latest-zcanary-studio-mac", "latest-zcanary-mac", "latest-zcanary", "latest-zcanary1-mac", "latest-zcanary1-studio-mac", "main"] 
 channel = input("What channel would you like to download from? (see channels.txt for a list of these): ")
 def grab_latestnonchannel(version, folder):
     print(f"Getting version hash for {folder}...")
@@ -92,26 +93,18 @@ def grab_latestchannelmac(channel, folder, version, type):
     print("Done!")
     input("Press enter to continue...")
     sys.exit()
+if 'client' in channel and 'mac' not in channel and channel != "latest-client":
+    grab_latestchannel(channel.split('-',4)[1], "version", channel, False, "N/A")
+if 'studio' in channel and 'mac' not in channel and channel != "latest-studio64" and channel != "latest-MFCStudio":
+    grab_latestchannel(channel.split('-',4)[1], "N/A", channel, True, "WindowsStudio")
+if 'client' in channel and 'mac' in channel:
+    grab_latestchannelmac(channel.split('-',4)[1], channel, "version", "RobloxPlayer.zip")
+if 'studio' in channel and 'mac' in channel:
+    grab_latestchannelmac(channel.split('-',4)[1], channel, "versionStudio", "RobloxStudioApp.zip")
 if channel == "latest-client":
     grab_latestnonchannel("version", "latest-client")
-elif channel == "latest-studio64":
+if channel == "latest-studio64":
     grab_latestnonchannel("versionQTStudio", "latest-studio64")
-elif channel == "latest-zlive2":
-    grab_latestchannel("zlive2", "version", "latest-zlive2", False, "N/A")
-elif channel == "latest-zlive2-studio":
-    grab_latestchannel("zlive2", "N/A", "latest-zlive2-studio", True, "WindowsStudio")
-elif channel == "latest-zlive2-mac":
-    grab_latestchannelmac("zlive2", "latest-zlive2-mac", "version", "RobloxPlayer.zip")
-elif channel == "latest-zcanary-studio-mac":
-    grab_latestchannelmac("zcanary", "latest-zcanary-studio-mac", "versionStudio", "RobloxStudioApp.zip")
-elif channel == "latest-zcanary-mac":
-    grab_latestchannelmac("zcanary", "latest-zcanary-mac", "version", "RobloxPlayer.zip")
-elif channel == "latest-zcanary":
-    grab_latestchannel("zcanary", "version", "latest-zcanary", False, "N/A")
-elif channel == "latest-zcanary1-mac":
-    grab_latestchannelmac("zcanary1", "latest-zcanary1-mac", "version", "RobloxPlayer.zip")
-elif channel == "latest-zcanary1-studio-mac":
-    grab_latestchannelmac("zcanary1", "latest-zcanary1-studio-mac", "versionStudio", "RobloxStudioApp.zip")
 elif channel == "main":
     year = input("What year of clients would you like to download?: ")
     if int(year) < 2009:
@@ -169,5 +162,7 @@ elif channel == "main":
                         with open(f"{os.getcwd()}/main/{year}/{os.path.splitext(lists[i])[0]}/{newest_items[g]}", 'wb') as f:
                             f.write(file.content)
         os.remove(f"DeployHistory{year}.txt")
-else:
-    input("Channel is not valid! Press enter to continue...")
+if channel not in channels:
+    print("Channel not found!")
+    input("Press enter to continue...")
+    sys.exit()
