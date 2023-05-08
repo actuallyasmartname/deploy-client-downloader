@@ -1,5 +1,5 @@
 import requests, os, sys
-channel = input("What channel would you like to download from? (latest-client, latest-studio64, latest-zlive2 or main): ")
+channel = input("What channel would you like to download from? (latest-client, latest-studio64, latest-zlive2, latest-zlive2-mac or main): ")
 def grab_latestnonchannel(version, folder):
     print(f"Getting version hash for {folder}...")
     latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{version}")
@@ -45,10 +45,24 @@ def grab_latestchannel(channel, folder):
     with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.text}.txt") as f:
         newest_items = [ x for x in f.read().splitlines() if "." in x ]
         for g in range(0, len(newest_items)):
-            file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-{newest_items[g]}", stream=True)
+            file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{latesthash.text}-{newest_items[g]}", stream=True)
             if file.status_code == 200:
                 with open(f"{os.getcwd()}/{folder}/{latesthash.text}/{newest_items[g]}", 'wb') as f:
                     f.write(file.content)
+    print("Done!")
+    input("Press enter to continue...")
+    sys.exit()
+def grab_latestchannelmac(channel, folder):
+    print(f"Getting latest version hash for {folder}...")
+    latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/mac/version")
+    print("Done!")
+    print(f"Downloading {latesthash.text}...")
+    if not os.path.exists(f"{os.getcwd()}/{folder}/{latesthash.text}"):
+        os.makedirs(f"{os.getcwd()}/{folder}/{latesthash.text}")
+    file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/mac/{latesthash.text}-RobloxPlayer.zip", stream=True)
+    if file.status_code == 200:
+        with open(f"{os.getcwd()}/{folder}/{latesthash.text}/Release-RobloxPlayer.zip", 'wb') as f:
+            f.write(file.content)
     print("Done!")
     input("Press enter to continue...")
     sys.exit()
@@ -58,10 +72,12 @@ elif channel == "latest-studio64":
     grab_latestnonchannel("versionQTStudio", "latest-studio64")
 elif channel == "latest-zlive2":
     grab_latestchannel("zlive2", "latest-zlive2")
+elif channel == "latest-zlive2-mac":
+    grab_latestchannelmac("zlive2", "latest-zlive2-mac")
 elif channel == "main":
     year = input("What year of clients would you like to download?: ")
     if int(year) < 2009:
-        print("DeployHistory does not exist for years before 2009")
+        print("DeployHistory does not exist for years before 2009, you can't even download versions before 2020 anyways lol")
         sys.exit()
     print("Downloading DeployHistory...")
     deployhistory = requests.get("https://s3.amazonaws.com/setup.roblox.com/DeployHistory.txt")
