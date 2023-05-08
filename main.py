@@ -1,5 +1,5 @@
 import requests, os, sys
-channel = input("What channel would you like to download from? (latest-client, latest-studio64, or main): ")
+channel = input("What channel would you like to download from? (latest-client, latest-studio64, latest-zlive2 or main): ")
 if channel == "latest-client":
     print("Getting latest version of Roblox...")
     latesthash = requests.get("https://s3.amazonaws.com/setup.roblox.com/version")
@@ -48,6 +48,32 @@ elif channel == "latest-studio64":
             file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-{newest_items[g]}", stream=True)
             if file.status_code == 200:
                 with open(f"{os.getcwd()}/latest-studio64/{latesthash.text}/{newest_items[g]}", 'wb') as f:
+                    f.write(file.content)
+    print("Done!")
+    input("Press enter to continue...")
+    sys.exit()
+elif channel == "latest-zlive2":
+    print("Getting latest ZLive2 client...")
+    latesthash = requests.get("https://s3.amazonaws.com/setup.roblox.com/channel/zlive2/version")
+    print("Done!")
+    print("Grabbing manifest file...")
+    if latesthash.status_code == 200:
+        manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/zlive2/{latesthash.text}-rbxPkgManifest.txt")
+        if manifest.status_code == 200:
+            if not os.path.exists(f"{os.getcwd()}/latest-zlive2/{latesthash.text}"):
+                os.makedirs(f"{os.getcwd()}/latest-zlive2/{latesthash.text}")
+            if not os.path.exists(f"{os.getcwd()}/latest-zlive2/manifests"):
+                os.makedirs(f"{os.getcwd()}/latest-zlive2/manifests")
+            with open(f"{os.getcwd()}/latest-zlive2/manifests/{latesthash.text}.txt", 'w') as f:
+                f.write(manifest.text)
+    print("Done!")
+    print(f"Downloading {latesthash.text}...")
+    with open(f"{os.getcwd()}/latest-zlive2/manifests/{latesthash.text}.txt") as f:
+        newest_items = [ x for x in f.read().splitlines() if "." in x ]
+        for g in range(0, len(newest_items)):
+            file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{latesthash.text}-{newest_items[g]}", stream=True)
+            if file.status_code == 200:
+                with open(f"{os.getcwd()}/latest-zlive2/{latesthash.text}/{newest_items[g]}", 'wb') as f:
                     f.write(file.content)
     print("Done!")
     input("Press enter to continue...")
