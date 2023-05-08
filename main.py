@@ -1,5 +1,5 @@
 import requests, os, sys
-channel = input("What channel would you like to download from? (latest-client, latest-studio64, latest-zlive2, latest-zlive2-mac or main): ")
+channel = input("What channel would you like to download from? (see channels.txt for a list of these): ")
 def grab_latestnonchannel(version, folder):
     print(f"Getting version hash for {folder}...")
     latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{version}")
@@ -52,16 +52,16 @@ def grab_latestchannel(channel, folder):
     print("Done!")
     input("Press enter to continue...")
     sys.exit()
-def grab_latestchannelmac(channel, folder):
+def grab_latestchannelmac(channel, folder, version, type):
     print(f"Getting latest version hash for {folder}...")
-    latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/mac/version")
+    latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/mac/{version}")
     print("Done!")
     print(f"Downloading {latesthash.text}...")
     if not os.path.exists(f"{os.getcwd()}/{folder}/{latesthash.text}"):
         os.makedirs(f"{os.getcwd()}/{folder}/{latesthash.text}")
-    file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/mac/{latesthash.text}-RobloxPlayer.zip", stream=True)
+    file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/mac/{latesthash.text}-{type}", stream=True)
     if file.status_code == 200:
-        with open(f"{os.getcwd()}/{folder}/{latesthash.text}/Release-RobloxPlayer.zip", 'wb') as f:
+        with open(f"{os.getcwd()}/{folder}/{latesthash.text}/{type}", 'wb') as f:
             f.write(file.content)
     print("Done!")
     input("Press enter to continue...")
@@ -73,7 +73,13 @@ elif channel == "latest-studio64":
 elif channel == "latest-zlive2":
     grab_latestchannel("zlive2", "latest-zlive2")
 elif channel == "latest-zlive2-mac":
-    grab_latestchannelmac("zlive2", "latest-zlive2-mac")
+    grab_latestchannelmac("zlive2", "latest-zlive2-mac", "version", "RobloxPlayer.zip")
+elif channel == "latest-zcanary-studio-mac":
+    grab_latestchannelmac("zcanary", "latest-zcanary-studio-mac", "versionStudio", "RobloxStudioApp.zip")
+elif channel == "latest-zcanary-mac":
+    grab_latestchannelmac("zcanary", "latest-zcanary-mac", "version", "RobloxPlayer.zip")
+elif channel == "latest-zcanary":
+    grab_latestchannel("zcanary", "latest-zcanary")
 elif channel == "main":
     year = input("What year of clients would you like to download?: ")
     if int(year) < 2009:
