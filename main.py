@@ -26,32 +26,58 @@ def grab_latestnonchannel(version, folder):
     print("Done!")
     input("Press enter to continue...")
     sys.exit()
-def grab_latestchannel(channel, folder):
+def grab_latestchannel(channel, version, folder, useClientSettings, clientSettingsVersion):
     print(f"Getting latest version hash for {folder}...")
-    latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/version")
-    print("Done!")
-    print("Grabbing manifest file...")
-    if latesthash.status_code == 200:
-        manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{latesthash.text}-rbxPkgManifest.txt")
-        if manifest.status_code == 200:
-            if not os.path.exists(f"{os.getcwd()}/{folder}/{latesthash.text}"):
-                os.makedirs(f"{os.getcwd()}/{folder}/{latesthash.text}")
-            if not os.path.exists(f"{os.getcwd()}/{folder}/manifests"):
-                os.makedirs(f"{os.getcwd()}/{folder}/manifests")
-            with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.text}.txt", 'w') as f:
-                f.write(manifest.text)
-    print("Done!")
-    print(f"Downloading {latesthash.text}...")
-    with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.text}.txt") as f:
-        newest_items = [ x for x in f.read().splitlines() if "." in x ]
-        for g in range(0, len(newest_items)):
-            file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{latesthash.text}-{newest_items[g]}", stream=True)
-            if file.status_code == 200:
-                with open(f"{os.getcwd()}/{folder}/{latesthash.text}/{newest_items[g]}", 'wb') as f:
-                    f.write(file.content)
-    print("Done!")
-    input("Press enter to continue...")
-    sys.exit()
+    if useClientSettings == True:
+        latesthash = requests.get(f"https://clientsettings.roblox.com/v2/client-version/{clientSettingsVersion}/channel/{channel}")
+        print("Done!")
+        print("Grabbing manifest file...")
+        if latesthash.status_code == 200:
+            manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{latesthash.json()['clientVersionUpload']}-rbxPkgManifest.txt")
+            if manifest.status_code == 200:
+                if not os.path.exists(f"{os.getcwd()}/{folder}/{latesthash.json()['clientVersionUpload']}"):
+                    os.makedirs(f"{os.getcwd()}/{folder}/{latesthash.json()['clientVersionUpload']}")
+                if not os.path.exists(f"{os.getcwd()}/{folder}/manifests"):
+                    os.makedirs(f"{os.getcwd()}/{folder}/manifests")
+                with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.json()['clientVersionUpload']}.txt", 'w') as f:
+                    f.write(manifest.text)
+        print("Done!")
+        print(f"Downloading {latesthash.json()['clientVersionUpload']}...")
+        with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.json()['clientVersionUpload']}.txt") as f:
+            newest_items = [ x for x in f.read().splitlines() if "." in x ]
+            for g in range(0, len(newest_items)):
+                file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{latesthash.json()['clientVersionUpload']}-{newest_items[g]}", stream=True)
+                if file.status_code == 200:
+                    with open(f"{os.getcwd()}/{folder}/{latesthash.json()['clientVersionUpload']}/{newest_items[g]}", 'wb') as f:
+                        f.write(file.content)
+        print("Done!")
+        input("Press enter to continue...")
+        sys.exit()
+    else:
+        latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{version}")
+        print("Done!")
+        print("Grabbing manifest file...")
+        if latesthash.status_code == 200:
+            manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{latesthash.text}-rbxPkgManifest.txt")
+            if manifest.status_code == 200:
+                if not os.path.exists(f"{os.getcwd()}/{folder}/{latesthash.text}"):
+                    os.makedirs(f"{os.getcwd()}/{folder}/{latesthash.text}")
+                if not os.path.exists(f"{os.getcwd()}/{folder}/manifests"):
+                    os.makedirs(f"{os.getcwd()}/{folder}/manifests")
+                with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.text}.txt", 'w') as f:
+                    f.write(manifest.text)
+                print("Done!")
+                print(f"Downloading {latesthash.text}...")
+                with open(f"{os.getcwd()}/{folder}/manifests/{latesthash.text}.txt") as f:
+                    newest_items = [ x for x in f.read().splitlines() if "." in x ]
+                    for g in range(0, len(newest_items)):
+                        file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{latesthash.text}-{newest_items[g]}", stream=True)
+                        if file.status_code == 200:
+                            with open(f"{os.getcwd()}/{folder}/{latesthash.text}/{newest_items[g]}", 'wb') as f:
+                                f.write(file.content)
+                print("Done!")
+                input("Press enter to continue...")
+                sys.exit()
 def grab_latestchannelmac(channel, folder, version, type):
     print(f"Getting latest version hash for {folder}...")
     latesthash = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/mac/{version}")
@@ -71,7 +97,9 @@ if channel == "latest-client":
 elif channel == "latest-studio64":
     grab_latestnonchannel("versionQTStudio", "latest-studio64")
 elif channel == "latest-zlive2":
-    grab_latestchannel("zlive2", "latest-zlive2")
+    grab_latestchannel("zlive2", "version", "latest-zlive2", False, "N/A")
+elif channel == "latest-zlive2-studio":
+    grab_latestchannel("zlive2", "N/A", "latest-zlive2-studio", True, "WindowsStudio")
 elif channel == "latest-zlive2-mac":
     grab_latestchannelmac("zlive2", "latest-zlive2-mac", "version", "RobloxPlayer.zip")
 elif channel == "latest-zcanary-studio-mac":
@@ -79,7 +107,11 @@ elif channel == "latest-zcanary-studio-mac":
 elif channel == "latest-zcanary-mac":
     grab_latestchannelmac("zcanary", "latest-zcanary-mac", "version", "RobloxPlayer.zip")
 elif channel == "latest-zcanary":
-    grab_latestchannel("zcanary", "latest-zcanary")
+    grab_latestchannel("zcanary", "version", "latest-zcanary", False, "N/A")
+elif channel == "latest-zcanary1-mac":
+    grab_latestchannelmac("zcanary1", "latest-zcanary1-mac", "version", "RobloxPlayer.zip")
+elif channel == "latest-zcanary1-studio-mac":
+    grab_latestchannelmac("zcanary1", "latest-zcanary1-studio-mac", "versionStudio", "RobloxStudioApp.zip")
 elif channel == "main":
     year = input("What year of clients would you like to download?: ")
     if int(year) < 2009:
