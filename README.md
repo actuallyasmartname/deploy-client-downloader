@@ -9,7 +9,7 @@
 See `channels.txt`
 # TODO
 
-Support for all channels except channels where all versions are hidden
+Support for all channels except channels where all versions are hidden (ZLive2 basically)
 
 Download just the latest packages (still gotta do Mac and other channels)
 
