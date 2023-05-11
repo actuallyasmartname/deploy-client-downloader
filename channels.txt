@@ -1,7 +1,9 @@
-main: Download clients from a specific year (cannot get clients before 2020) from the main channel
+live: Download clients from a specific year (cannot get clients before 2019) from the live channel
+zintegration: Download clients from a specific year (2020 - September 2022) from the zintegration channel (DeployHistory sourced from qq.com since it was wiped on regular servers)
+zcanary: Download clients from a specific year (2020 - September 2022) from the zcanary channel
 
-latest-client: Grabs latest client from the main channel
-latest-studio64: Grabs latest Studio x64 client from the main channel
+latest-client: Grabs latest client from the live channel
+latest-studio64: Grabs latest Studio x64 client from the live channel
 latest-zlive2-client: Grabs latest client from the ZLive2 channel
 latest-zlive2-studio: Grabs latest Studio clientfrom the ZLive2 channel
 latest-zlive2-client-mac: Grabs latest client from the ZLive2 channel for MacOS
