@@ -175,8 +175,6 @@ if channel == "latest-studio64":
     grab_latestnonchannel("versionQTStudio", "latest-studio64")
 if channel == "zintegration":
     grabfromdeployhistory(channel, True)
-if 'latest' not in channel:
-    grabfromdeployhistory(channel, False)
 elif channel == "live":
     qqmode = False
     year = input("What year of clients would you like to download?: ")
@@ -253,3 +251,5 @@ elif channel == "live":
                     with open(f"{os.getcwd()}/main/{year}/{os.path.splitext(item)[0]}/{items[g]}", 'wb') as f:
                         f.write(file.content)
     os.remove(f"DeployHistory{year}.txt")
+if 'latest' not in channel:
+    grabfromdeployhistory(channel, False)
