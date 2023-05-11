@@ -177,7 +177,7 @@ if channel == "zintegration":
     grabfromdeployhistory(channel, True)
 if 'latest' not in channel:
     grabfromdeployhistory(channel, False)
-elif channel == "main":
+elif channel == "live":
     qqmode = False
     year = input("What year of clients would you like to download?: ")
     os.remove(f"DeployHistory{year}.txt") if os.path.exists(f"DeployHistory{year}.txt") else 0
