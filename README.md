@@ -27,5 +27,3 @@ Clean up and optimize code, it's absolute hell in there and I warn the people wh
 Fallback/mirror servers when client not found (this will probably never be implemented though)
 
 Download from https://androdome.com/DeployHistory, this one's gonna be a tough one though since there's no manifests and no raw DeployHistory file
-
-File integrity check
