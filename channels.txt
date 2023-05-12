@@ -4,6 +4,7 @@ zcanary: Download clients from a specific year (2020 - September 2022) from the 
 
 latest-client: Grabs latest client from the live channel
 latest-studio64: Grabs latest Studio x64 client from the live channel
+latest-studio: Grabs latest Studio client from the live channel
 latest-zlive2-client: Grabs latest client from the ZLive2 channel
 latest-zlive2-studio: Grabs latest Studio clientfrom the ZLive2 channel
 latest-zlive2-client-mac: Grabs latest client from the ZLive2 channel for MacOS
