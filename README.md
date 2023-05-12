@@ -1,7 +1,9 @@
 "The world would be a better place if Roblox packaged Windows DeployClients like they did with Mac" - Nobody
 
 # DeployClients? Huh?
-DeployClients are the clients Roblox uses to push out new updates (which actually used to include RCCService but that's a story for another time). These were introduced sometime in 2008 and were a step up from the previous CAB file installation process. Practically all version numbers, client types, etc. of DeployClients that were pushed to regular users were added to a file called DeployHistory and have been untouched (apart from a wipe in 2009) for a decade. But, that's for DeployHistory. That's fine and all but what about the actual clients? They were wiped in December 2019. Every single damn version before that was sent to the shredder. People had so much Roblox lost media to find, and then a whole pile got added on top of it.
+DeployClients are the clients Roblox uses to push out new updates (which actually used to include RCCService but that's a story for another time). These were introduced during August 2008 and were a step up from the previous CAB file installation process. Practically all version numbers, client types, etc. of DeployClients that were pushed to regular users were added to a file called DeployHistory and have been untouched (apart from a wipe in 2009) for a decade. But, that's for DeployHistory. That's fine and all but what about the actual clients? They were made private in February 2020. Every single damn version before that was public, went unaccessible. People had so much Roblox lost media to find, and then a whole pile got added on top of it.
+
+Although clients from 3 months before this change were restored and API Dumps for older Studio versions were later made public, no plans to reintroduce these clients officially to the public have been made.
 
 FYI: This tool wasn't exactly made to preserve this lost media (although I will probably add another file that cycles through all channels and downloads all clients) but as a little gimmicky project, if you could call it that.
 
