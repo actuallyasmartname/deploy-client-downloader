@@ -20,8 +20,6 @@ Support for all channels except channels where all versions are hidden (ZLive2 b
 
 Download just the latest packages (still gotta do Mac and other channels)
 
-~~Sort clients if they are Studio, Studio64, WindowsPlayer, etc.~~ Kinda already done for latest versions.
-
 Make it look less like some sort of debug madness and more user friendly
 
 Clean up and optimize code, it's absolute hell in there and I warn the people who attempt to view it
