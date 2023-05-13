@@ -194,7 +194,7 @@ def grabfromdeployhistory(channel, qqmode):
     manifests = os.listdir(f"{os.getcwd()}/{channel}/{year}/{type}/manifests")
     for l in manifests:
         print(f"Downloading {os.path.splitext(l)[0]}...")
-        with open(f"{os.getcwd()}/{channel}/{year}/manifests/{l}") as f:
+        with open(f"{os.getcwd()}/{channel}/{year}/{type}/manifests/{l}") as f:
             newest_items = [ x for x in f.read().splitlines() if "." in x ]
             for g in range(0, len(newest_items)):
                 file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{os.path.splitext(l)[0]}-{newest_items[g]}", stream=True)
