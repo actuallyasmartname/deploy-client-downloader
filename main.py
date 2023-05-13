@@ -193,7 +193,7 @@ def grabfromdeployhistory(channel, qqmode):
     print("Downloading files from manifests (this will probably take a long time, please stand by)...")
     manifests = os.listdir(f"{os.getcwd()}/{channel}/{year}/{type}/manifests")
     for l in manifests:
-        print(f"Downloading {os.path.splitext(l)[0]}...")
+        print(f"Downloading {type} version {os.path.splitext(l)[0]}...")
         with open(f"{os.getcwd()}/{channel}/{year}/{type}/manifests/{l}") as f:
             newest_items = [ x for x in f.read().splitlines() if "." in x ]
             for g in range(0, len(newest_items)):
