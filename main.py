@@ -1,5 +1,5 @@
 import requests, os, sys, hashlib
-channels = ["latest-client", "latest-studio64", "latest-studio", "latest-zlive2-client", "latest-zlive2-studio", "latest-zlive2-client-mac", "latest-zcanary-studio-mac", "latest-zcanary-client-mac", "latest-zcanary-client", "latest-zcanary1-client-mac", "latest-zcanary1-studio-mac", "live", "zintegration", "zcanary", "live-mac", "zcanary1", "zcanary2", "zcanaryapps"] 
+channels = ["latest-client", "latest-studio64", "latest-studio", "latest-zlive2-client", "latest-zlive2-studio", "latest-zlive2-client-mac", "latest-zcanary-studio-mac", "latest-zcanary-client-mac", "latest-zcanary-client", "latest-zcanary1-client-mac", "latest-zcanary1-studio-mac", "live", "zintegration", "zcanary", "live-mac", "zcanary1", "zcanary2", "zcanaryapps", ""] 
 channel = input("What channel would you like to download from? (see channels.txt for a list of these): ")
 if channel not in channels:
     print("Channel not found!")
@@ -173,35 +173,34 @@ def grabfromdeployhistory(channel, qqmode):
     print("Downloading manifests...")
     with open(f"DeployHistory{channel}{year}.txt", 'r') as f:
         for line in f:
-            type = line.split(' ', 2)[1]
             if 'version-hidden' in line:
                 continue
             manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{line.split(' ', 3)[2]}-rbxPkgManifest.txt")
             if manifest.status_code == 200:
-                if not os.path.exists(f"{os.getcwd()}/{channel}/{year}/{type}"):
-                    os.makedirs(f"{os.getcwd()}/{channel}/{year}/{type}")
-                if not os.path.exists(f"{os.getcwd()}/{channel}/{year}/{type}/manifests"):
-                    os.makedirs(f"{os.getcwd()}/{channel}/{year}/{type}/manifests")
-                with open(f"{os.getcwd()}/{channel}/{year}/{type}/manifests/{line.split(' ', 3)[2]}.txt", 'w') as f:
+                if not os.path.exists(f"{os.getcwd()}/{channel}/{year}/"):
+                    os.makedirs(f"{os.getcwd()}/{channel}/{year}/")
+                if not os.path.exists(f"{os.getcwd()}/{channel}/{year}/manifests"):
+                    os.makedirs(f"{os.getcwd()}/{channel}/{year}/manifests")
+                with open(f"{os.getcwd()}/{channel}/{year}/manifests/{line.split(' ', 3)[2]}.txt", 'w') as f:
                     f.write(manifest.text)
-    if not os.path.exists(f"{os.getcwd()}/{channel}/{year}/{type}/manifests"):
+    if not os.path.exists(f"{os.getcwd()}/{channel}/{year}/"):
         print("Error: No manifests were downloaded, try a different year. (all clients before 2019 have been erased from ROBLOX's servers, sorry!)")
         os.remove(f"DeployHistory{channel}{year}.txt")
         input("Press enter to continue...")
         sys.exit()
     print("Done!")
     print("Downloading files from manifests (this will probably take a long time, please stand by)...")
-    manifests = os.listdir(f"{os.getcwd()}/{channel}/{year}/{type}/manifests")
+    manifests = os.listdir(f"{os.getcwd()}/{channel}/{year}/manifests")
     for l in manifests:
-        print(f"Downloading {type} version {os.path.splitext(l)[0]}...")
-        with open(f"{os.getcwd()}/{channel}/{year}/{type}/manifests/{l}") as f:
+        print(f"Downloading version {os.path.splitext(l)[0]}...")
+        with open(f"{os.getcwd()}/{channel}/{year}/manifests/{l}") as f:
             newest_items = [ x for x in f.read().splitlines() if "." in x ]
             for g in range(0, len(newest_items)):
                 file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/channel/{channel}/{os.path.splitext(l)[0]}-{newest_items[g]}", stream=True)
                 if file.status_code == 200:
-                    if not os.path.exists(f"{os.getcwd()}/{channel}/{year}/{type}/{os.path.splitext(l)[0]}"):
-                        os.makedirs(f"{os.getcwd()}/{channel}/{year}/{type}/{os.path.splitext(l)[0]}")
-                    with open(f"{os.getcwd()}/{channel}/{year}/{type}/{os.path.splitext(l)[0]}/{newest_items[g]}", 'wb') as f:
+                    if not os.path.exists(f"{os.getcwd()}/{channel}/{year}/{os.path.splitext(l)[0]}"):
+                        os.makedirs(f"{os.getcwd()}/{channel}/{year}/{os.path.splitext(l)[0]}")
+                    with open(f"{os.getcwd()}/{channel}/{year}/{os.path.splitext(l)[0]}/{newest_items[g]}", 'wb') as f:
                         f.write(file.content)
     os.remove(f"DeployHistory{channel}{year}.txt")
 if channel == "latest-client":
@@ -250,14 +249,13 @@ if channel == "live":
     print("Downloading manifests...")
     with open(f"DeployHistory{channel}{year}.txt", 'r') as f:
         for line in f:
-            type = line.split(' ', 2)[1]
             manifest = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{line.split(' ', 3)[2]}-rbxPkgManifest.txt")
             if manifest.status_code == 200:
-                if not os.path.exists(f"{os.getcwd()}/live/{year}/{type}"):
-                    os.makedirs(f"{os.getcwd()}/live/{year}/{type}")
-                if not os.path.exists(f"{os.getcwd()}/live/{year}/{type}/manifests"):
+                if not os.path.exists(f"{os.getcwd()}/live/{year}"):
+                    os.makedirs(f"{os.getcwd()}/live/{year}")
+                if not os.path.exists(f"{os.getcwd()}/live/{year}/manifests"):
                     os.makedirs(f"{os.getcwd()}/live/{year}/{type}/manifests")
-                with open(f"{os.getcwd()}/live/{year}/{type}/manifests/{line.split(' ', 3)[2]}.txt", 'w') as f:
+                with open(f"{os.getcwd()}/live/{year}/manifests/{line.split(' ', 3)[2]}.txt", 'w') as f:
                     f.write(manifest.text)
     if int(year) == 2019:
         print("Attempting to get extra clients from qq.com...")
@@ -265,27 +263,27 @@ if channel == "live":
         with open(f"DeployHistory{channel}{year}.txt", 'r') as f:
             for line in f:
                 manifest = requests.get(f"https://setup.rbxcdn.qq.com/{line.split(' ', 3)[2]}-rbxPkgManifest.txt")
-                if manifest.status_code == 200 and not os.path.exists(f"{os.getcwd()}/live/{year}/{type}/manifests/{line.split(' ', 3)[2]}.txt"):
+                if manifest.status_code == 200 and not os.path.exists(f"{os.getcwd()}/live/{year}/manifests/{line.split(' ', 3)[2]}.txt"):
                     print(f"Found version {line.split(' ', 3)[2]} from qq.com")
-                    with open(f"{os.getcwd()}/live/{year}/{type}/manifests/{line.split(' ', 3)[2]}.txt", 'w') as f:
+                    with open(f"{os.getcwd()}/live/{year}/manifests/{line.split(' ', 3)[2]}.txt", 'w') as f:
                         f.write(manifest.text)
-    if not os.path.exists(f"{os.getcwd()}/live/{year}/{type}/manifests"):
+    if not os.path.exists(f"{os.getcwd()}/live/{year}/manifests"):
         os.remove(f"DeployHistory{channel}{year}.txt")
         input("Press enter to continue...")
         sys.exit()
     print("Done!")
     print("Downloading files from manifests (this will probably take a long time, please stand by)...")
-    manifests = os.listdir(f"{os.getcwd()}/live/{year}/{type}/manifests")
+    manifests = os.listdir(f"{os.getcwd()}/live/{year}/manifests")
     for l in manifests:
-        print(f"Downloading {type} version {os.path.splitext(l)[0]}...")
-        with open(f"{os.getcwd()}/{channel}/{year}/{type}/manifests/{l}") as f:
+        print(f"Downloading version {os.path.splitext(l)[0]}...")
+        with open(f"{os.getcwd()}/{channel}/{year}/manifests/{l}") as f:
             newest_items = [ x for x in f.read().splitlines() if "." in x ]
             for g in range(0, len(newest_items)):
                 file = requests.get(f"https://s3.amazonaws.com/setup.roblox.com/{os.path.splitext(l)[0]}-{newest_items[g]}", stream=True)
                 if file.status_code == 200:
-                    if not os.path.exists(f"{os.getcwd()}/{channel}/{year}/{type}/{os.path.splitext(l)[0]}"):
-                        os.makedirs(f"{os.getcwd()}/{channel}/{year}/{type}/{os.path.splitext(l)[0]}")
-                    with open(f"{os.getcwd()}/{channel}/{year}/{type}/{os.path.splitext(l)[0]}/{newest_items[g]}", 'wb') as f:
+                    if not os.path.exists(f"{os.getcwd()}/{channel}/{year}/{os.path.splitext(l)[0]}"):
+                        os.makedirs(f"{os.getcwd()}/{channel}/{year}/{os.path.splitext(l)[0]}")
+                    with open(f"{os.getcwd()}/{channel}/{year}/{os.path.splitext(l)[0]}/{newest_items[g]}", 'wb') as f:
                         f.write(file.content)
     os.remove(f"DeployHistory{channel}{year}.txt")
     print("Done!")
