@@ -16,6 +16,8 @@ FYI: This tool wasn't exactly made to preserve this lost media (although I will 
 See `channels.txt`
 # TODO
 
+**PRIORITY: SWITCH TO ASYNCHRONOUS CODE**
+
 Support for all channels except channels where all versions are hidden (ZLive2 basically)
 
 Download just the latest packages (still gotta do Mac and other channels)
